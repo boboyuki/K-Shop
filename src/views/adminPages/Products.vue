@@ -233,6 +233,7 @@
 
 <script>
 import $ from 'jquery'
+import Cookies from 'js-cookie'
 import Pagination from '@/components/common/Pagination'
 export default {
   data () {
@@ -257,7 +258,12 @@ export default {
       const vm = this
       const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/products?page=${page}`
       vm.isLoading = true
-      this.$http.get(api).then(res => {
+      this.$http.get(api, {
+        headers: {
+          Authorization: `${Cookies.get('token')}`
+        }
+      }).then(res => {
+        console.log(res)
         vm.products = res.data.products
         vm.isLoading = false
         vm.pagination = res.data.pagination

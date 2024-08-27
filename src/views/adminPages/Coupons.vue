@@ -157,6 +157,7 @@
 
 <script>
 import $ from 'jquery'
+import Cookies from 'js-cookie'
 import Pagination from '@/components/common/Pagination'
 export default {
   data () {
@@ -207,6 +208,7 @@ export default {
     },
     updateCoupon () {
       const vm = this
+      console.log(Cookies.get('token'))
       // 預設為post
       let api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/coupon`
       let httpMethod = 'post'
@@ -217,7 +219,12 @@ export default {
         api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/coupon/${vm.tempCoupon.id}`
         httpMethod = 'delete'
       }
-      this.$http[httpMethod](api, { data: vm.tempCoupon }).then(res => {
+      this.$http[httpMethod](api, { data: vm.tempCoupon }, {
+        headers: {
+          Authorization: `${Cookies.get('token')}`
+        }
+      }
+      ).then(res => {
         const modal = vm.openModalMethod === 'delete' ? '#delCouponModal' : '#couponModal'
         if (res.data.success) {
           $(modal).modal('hide')

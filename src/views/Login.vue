@@ -35,6 +35,7 @@
 </template>
 
 <script>
+import Cookies from 'js-cookie'
 export default {
   name: 'login',
   data () {
@@ -50,6 +51,8 @@ export default {
       const api = `${process.env.VUE_APP_APIPATH}/admin/signin`
       this.$http.post(api, this.user).then(res => {
         if (res.data.success) {
+          const token = res.data.token
+          Cookies.set('token', token)
           this.$router.push('/admin/products')
         }
       })

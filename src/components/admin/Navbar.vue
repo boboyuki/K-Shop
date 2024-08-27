@@ -13,6 +13,7 @@
   </div>
 </template>
 <script>
+import Cookies from 'js-cookie'
 export default {
   name: 'NavBar',
   methods: {
@@ -22,6 +23,7 @@ export default {
       this.$http.post(url).then((res) => {
         if (res.data.success) {
           vm.$router.push('/')
+          Cookies.remove('token')
         }
       })
     }
