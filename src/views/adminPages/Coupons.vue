@@ -181,7 +181,11 @@ export default {
       const vm = this
       const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/coupons?page=${page}`
       vm.isLoading = true
-      this.$http.get(api).then(res => {
+      this.$http.get(api, {
+        headers: {
+          Authorization: `${Cookies.get('token')}`
+        }
+      }).then(res => {
         vm.coupons = res.data.coupons
         vm.pagination = res.data.pagination
         console.log(res.data.coupons.due_date)

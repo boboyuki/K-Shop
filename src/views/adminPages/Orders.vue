@@ -197,7 +197,11 @@ export default {
     updateOrder (orderId) {
       const vm = this
       const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/order/${orderId}`
-      this.$http.put(api, { data: vm.tempOrder }).then(res => {
+      this.$http.put(api, { data: vm.tempOrder }, {
+        headers: {
+          Authorization: `${Cookies.get('token')}`
+        }
+      }).then(res => {
         if (res.data.success) {
           $('#orderModal').modal('hide')
           vm.getOrders()

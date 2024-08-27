@@ -299,7 +299,11 @@ export default {
         api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/product/${vm.tempProduct.id}`
         httpMethod = 'delete'
       }
-      this.$http[httpMethod](api, { data: vm.tempProduct }).then(res => {
+      this.$http[httpMethod](api, { data: vm.tempProduct }, {
+        headers: {
+          Authorization: `${Cookies.get('token')}`
+        }
+      }).then(res => {
         const modal = vm.openModalMethod === 'delete' ? '#delProductModal' : '#productsModal'
         if (res.data.success) {
           $(modal).modal('hide')
@@ -321,7 +325,8 @@ export default {
       const url = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/upload/`
       this.$http.post(url, formData, {
         headers: {
-          'Content-Type': 'multipart/form-data'
+          'Content-Type': 'multipart/form-data',
+          Authorization: `${Cookies.get('token')}`
         }
       }).then(res => {
         vm.fileUploading = false
